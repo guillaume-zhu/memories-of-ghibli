@@ -104,6 +104,35 @@ const createGlobalHull = (root, thickness = 0.03) => {
 }
 
 /**
+ * Fonction création Hitbox pour raycaster hover
+ */
+const createBoxHitbox = (root, shrinkX = 1, shrinkY = 1, shrinkZ = 1) => {
+  // Bounding box autour du model
+  const box = new THREE.Box3().setFromObject(root)
+
+  // Récupération des dimensions de la box
+  const size = box.getSize(new THREE.Vector3())
+  const center = box.getCenter(new THREE.Vector3())
+
+  // Hitbox
+  const geometry = new THREE.BoxGeometry(size.x * shrinkX, size.y * shrinkY, size.z * shrinkZ)
+  const material = new THREE.MeshBasicMaterial({
+    visible: true,
+    wireframe: true,
+    color: "red",
+  })
+  const hitbox = new THREE.Mesh(geometry, material)
+
+  // Placement Hitbox
+  root.updateMatrixWorld(true)
+  root.worldToLocal(center)
+  hitbox.position.copy(center)
+  hitbox.name = "boxHitbox"
+
+  return hitbox
+}
+
+/**
  * Raycaster
  */
 
@@ -116,12 +145,15 @@ const interactiveObjects = []
 // CurrentIntersect pour stocker les objets qui sont en hover
 let currentIntersect = null
 
+let hoveredModel = null
+
 /**
  * Models Imports
  */
 
-// ---- Warawara ---- //
 const gltfLoader = new GLTFLoader()
+
+// ---- Warawara ---- //
 
 gltfLoader.load("models/Warawara.glb", (gltf) => {
   console.log("warawara chargé", gltf)
@@ -131,7 +163,7 @@ gltfLoader.load("models/Warawara.glb", (gltf) => {
   // Ajout dans la scène
   scene.add(model)
 
-  // Création du Hull
+  // -- Création du Hull -- //
   const hull = createGlobalHull(model, 0.025)
   if (hull) {
     model.add(hull)
@@ -140,8 +172,18 @@ gltfLoader.load("models/Warawara.glb", (gltf) => {
   // Stockage mémoire du hull dans le model
   model.userData.hull = hull
 
-  // Ajout dans interactiveObjects
-  interactiveObjects.push(model)
+  // Paramétrage pour le contour en hover
+  model.userData.hullBaseScale = 1.03
+  model.userData.hullHoverScale = 1.06
+
+  // -- Création de la hitbox -- //
+  const hitbox = createBoxHitbox(model, 1, 1, 0.7)
+
+  if (hitbox) {
+    model.add(hitbox)
+    hitbox.userData.model = model
+    interactiveObjects.push(hitbox)
+  }
 })
 
 /**
@@ -150,12 +192,12 @@ gltfLoader.load("models/Warawara.glb", (gltf) => {
 const ambientLight = new THREE.AmbientLight("#ffffff", 5)
 scene.add(ambientLight)
 
-const cube = new THREE.Mesh(
-  new THREE.BoxGeometry(1, 1),
-  new THREE.MeshBasicMaterial({ color: "pink" }),
-)
+// const cube = new THREE.Mesh(
+//   new THREE.BoxGeometry(1, 1),
+//   new THREE.MeshBasicMaterial({ color: "pink" }),
+// )
 
-scene.add(cube)
+// scene.add(cube)
 /**
  * Sizes
  */
@@ -212,24 +254,39 @@ const tick = () => {
   timer.update()
 
   // Update object
-  cube.position.y = Math.sin(elapsedTIme * 0.8)
+  // cube.position.y = Math.sin(elapsedTIme * 0.8)
 
-  // Raycaster
+  // ---- Raycaster ----
   raycaster.setFromCamera(mouse, camera)
-  const objectToTest = [cube]
-  const intersects = raycaster.intersectObjects(objectToTest)
 
-  for (const object of objectToTest) {
-    object.scale.setScalar(1)
-  }
-  for (const intersect of intersects) {
-    intersect.object.scale.setScalar(1.2)
-  }
+  const intersects = raycaster.intersectObjects(interactiveObjects, false)
 
+  let newHoveredModel = null
+
+  // Si raycaster touche un objet
   if (intersects.length) {
+    const hitObject = intersects[0].object
+    newHoveredModel = hitObject.userData.model || null
     currentIntersect = intersects[0]
+
+    canvas.style.cursor = "pointer"
   } else {
     currentIntersect = null
+
+    canvas.style.cursor = "default"
+  }
+
+  // Si objet hover a changé depuis précédente frame
+  if (hoveredModel !== newHoveredModel) {
+    if (hoveredModel && hoveredModel.userData.hull) {
+      hoveredModel.userData.hull.scale.setScalar(hoveredModel.userData.hullBaseScale)
+    }
+
+    if (newHoveredModel && newHoveredModel.userData.hull) {
+      newHoveredModel.userData.hull.scale.setScalar(newHoveredModel.userData.hullHoverScale)
+    }
+
+    hoveredModel = newHoveredModel
   }
 
   renderer.render(scene, camera)
