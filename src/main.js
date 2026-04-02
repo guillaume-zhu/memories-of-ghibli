@@ -2,6 +2,7 @@ import * as THREE from "three"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 import GUI, { Controller } from "three/examples/jsm/libs/lil-gui.module.min.js"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
+import { DRACOLoader } from "three/examples/jsm/Addons.js"
 
 import { createGlobalHull } from "./utils/createGlobalHull"
 import { createBoxHitbox } from "./utils/createBoxHitbox"
@@ -64,7 +65,11 @@ let hoveredModel = null
 /**
  * Models Imports
  */
+const dracoLoader = new DRACOLoader()
+dracoLoader.setDecoderPath("/draco/")
+
 const gltfLoader = new GLTFLoader()
+gltfLoader.setDRACOLoader(dracoLoader)
 
 // ---- Warawara ---- //
 gltfLoader.load("models/Warawara.glb", (gltf) => {
