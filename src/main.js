@@ -2,6 +2,7 @@ import * as THREE from "three"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 import GUI, { Controller } from "three/examples/jsm/libs/lil-gui.module.min.js"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
+import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js"
 
 /**
  * Base
@@ -42,6 +43,53 @@ window.addEventListener("click", () => {
 })
 
 /**
+ * Fonction création GlobalHull (fusion des géométries et contours noirs)
+ */
+const createGlobalHull = (root, thickness = 0.03) => {
+  const geometries = []
+
+  // ---- Copie et fusion des géométries ---- //
+  // Mise à jour des matrices du modèle avant fusion
+  root.updateMatrixWorld(true)
+
+  // Parcours des child du model
+  root.traverse((child) => {
+    // Si child n'est pas un mesh
+    if (!child.isMesh) {
+      return
+    }
+
+    // Clonage des géométries
+    const geometry = child.geometry.clone()
+
+    // Inclusion des matrices dans le monde aux géométries copiées (sinon elles se retrouvent empilées au centre)
+    geometry.applyMatrix4(child.matrixWorld)
+
+    // Ajout de la géométrie finale dans le tableau
+    geometries.push(geometry)
+  })
+
+  // Sécurité si modèle aucun mesh
+  if (geometries.length === 0) {
+    return null
+  }
+
+  // Fusion des géometries
+  const mergedGeometry = BufferGeometryUtils.mergeGeometries(geometries, false)
+
+  // ---- Hull ---- //
+  const outlineMaterial = new THREE.MeshBasicMaterial({
+    color: 0x000000,
+    side: THREE.BackSide,
+  })
+
+  const outlineMesh = new THREE.Mesh(mergedGeometry, outlineMaterial)
+  outlineMesh.scale.multiplyScalar(1 + thickness)
+
+  return outlineMesh
+}
+
+/**
  * Raycaster
  */
 
@@ -58,7 +106,7 @@ let currentIntersect = null
  * Models Imports
  */
 
-// Warawara
+// ---- Warawara ---- //
 const gltfLoader = new GLTFLoader()
 
 gltfLoader.load("models/Warawara.glb", (gltf) => {
@@ -68,6 +116,15 @@ gltfLoader.load("models/Warawara.glb", (gltf) => {
 
   // Ajout dans la scène
   scene.add(model)
+
+  // Création du Hull
+  const hull = createGlobalHull(model, 0.025)
+  if (hull) {
+    scene.add(hull)
+  }
+
+  // Stockage mémoire du hull dans le model
+  model.userData.hull = hull
 
   // Ajout dans interactiveObjects
   interactiveObjects.push(model)
@@ -128,7 +185,7 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(sizes.pixelRatio)
-renderer.setClearColor("#111111")
+renderer.setClearColor("#757575")
 
 /**
  * Animate
