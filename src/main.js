@@ -29,7 +29,7 @@ scene.add(axesHelper)
 const mouse = new THREE.Vector2()
 
 // Mousemove
-window.addEventListener("mousemove", (event) => {
+canvas.addEventListener("mousemove", (event) => {
   mouse.x = (event.clientX / sizes.width) * 2 - 1
   mouse.y = -(event.clientY / sizes.height) * 2 + 1
 })
