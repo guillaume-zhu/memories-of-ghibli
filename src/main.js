@@ -12,7 +12,6 @@ import { createLights } from './scene/lights.js'
 /**
  * Mouse and Click event
  */
-const mouse = new THREE.Vector2()
 
 window.addEventListener('mousemove', (event) => {
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1
