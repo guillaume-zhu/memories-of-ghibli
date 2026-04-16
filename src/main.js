@@ -14,11 +14,13 @@ import { createLights } from "./scene/lights.js"
  */
 const mouse = new THREE.Vector2()
 
+// Mousemove
 window.addEventListener("mousemove", (event) => {
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
 })
 
+// Click event
 window.addEventListener("click", () => {
   if (currentIntersect) {
     console.log("Objet cliqué :", currentIntersect.object)
@@ -36,6 +38,9 @@ const interactiveObjects = []
 // CurrentIntersect pour stocker les objets qui sont en hover
 let currentIntersect = null
 
+/**
+ * Setup Initialisation
+ */
 async function init() {
   const { scene, camera, renderer } = createSetup()
   const controls = createControls(camera, renderer.domElement)
@@ -71,13 +76,17 @@ async function init() {
 
   function animate() {
     requestAnimationFrame(animate)
+
+    // ---- Clock ---- //
     timer.update()
     const t = timer.getElapsed()
 
+    // ---- Update Animation ---- //
+    // Decor
     grassMaterial.uniforms.uTime.value = t
     waterMaterial.uniforms.uTime.value = t
 
-    // Raycaster
+    // ---- Raycaster ---- //
     raycaster.setFromCamera(mouse, camera)
     const intersects = raycaster.intersectObjects(interactiveObjects)
 
@@ -95,6 +104,8 @@ async function init() {
     }
 
     controls.update()
+
+    // ---- Render ---- //
     renderer.render(scene, camera)
   }
 
