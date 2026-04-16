@@ -1,26 +1,27 @@
-import './style.css'
-import * as THREE from 'three'
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
-import { createSetup } from './scene/setup.js'
-import { createControls } from './controls/camera.js'
-import { loadPlatform } from './world/platform.js'
-import { createWater } from './world/water.js'
-import { createGrass } from './world/grass.js'
-import { createSky } from './world/sky.js'
-import { createLights } from './scene/lights.js'
+import "./style.css"
+import * as THREE from "three"
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js"
+import { createSetup } from "./scene/setup.js"
+import { createControls } from "./controls/camera.js"
+import { loadPlatform } from "./world/platform.js"
+import { createWater } from "./world/water.js"
+import { createGrass } from "./world/grass.js"
+import { createSky } from "./world/sky.js"
+import { createLights } from "./scene/lights.js"
 
 /**
  * Mouse and Click event
  */
+const mouse = new THREE.Vector2()
 
-window.addEventListener('mousemove', (event) => {
+window.addEventListener("mousemove", (event) => {
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
 })
 
-window.addEventListener('click', () => {
+window.addEventListener("click", () => {
   if (currentIntersect) {
-    console.log('Objet cliqué :', currentIntersect.object)
+    console.log("Objet cliqué :", currentIntersect.object)
   }
 })
 
@@ -53,8 +54,8 @@ async function init() {
   // Warawara
   const gltfLoader = new GLTFLoader()
 
-  gltfLoader.load('models/Warawara.glb', (gltf) => {
-    console.log('warawara chargé', gltf)
+  gltfLoader.load("models/Warawara.glb", (gltf) => {
+    console.log("warawara chargé", gltf)
 
     const model = gltf.scene
     scene.add(model)
