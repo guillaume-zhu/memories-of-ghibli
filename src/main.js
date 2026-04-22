@@ -14,6 +14,13 @@ import { createLights } from "./scene/lights.js"
 import { CameraControls } from "./controls/CameraControls.js"
 import { MouseTracker } from "./controls/MouseTracker.js"
 
+import { createBoxHitbox } from "./utils/createBoxHitbox.js"
+import { createGlobalHull } from "./utils/createGlobalHull.js"
+import { updateHoverState } from "./utils/updateHoverState.js"
+import { registerInteractiveModel } from "./utils/registerInteractiveModel.js"
+import { getModelFromIntersectedObject } from "./utils/getModelFromIntersectedObject.js"
+import { setupModelAnimation } from "./utils/setupModelAnimation.js"
+
 /**
  * Global state
  */
@@ -24,6 +31,8 @@ let cameraControls = null
 const raycaster = new THREE.Raycaster()
 const interactiveObjects = []
 let currentIntersect = null
+let hoveredModel = null
+const mixers = []
 
 /**
  * User interactions
@@ -32,8 +41,13 @@ window.addEventListener("click", () => {
   if (cameraControls?.hasMoved) {
     return
   }
-  if (currentIntersect) {
-    console.log("Objet cliqué :", currentIntersect.object)
+
+  const clickedModel = currentIntersect
+    ? getModelFromIntersectedObject(currentIntersect.object)
+    : null
+
+  if (clickedModel) {
+    console.log("Objet cliqué :", clickedModel)
   }
 })
 
@@ -75,7 +89,7 @@ async function init() {
   gltfLoader.setDRACOLoader(dracoLoader)
   gltfLoader.setMeshoptDecoder(MeshoptDecoder)
 
-  // Warawara
+  // ---- Warawara test ----
   gltfLoader.load("models/Warawara.glb", (gltf) => {
     console.log("warawara chargé", gltf)
 
@@ -85,8 +99,14 @@ async function init() {
     model.position.z = -10
     model.position.y = 5
 
-    // Ajout dans interactiveObjects
-    interactiveObjects.push(model)
+    registerInteractiveModel(model, interactiveObjects, {
+      hitboxScale: [1, 1, 1],
+      showHitbox: true,
+      outlineBaseThickness: 0.03,
+      outlineHoverThickness: 1.6,
+    })
+
+    setupModelAnimation(model, gltf, mixers)
   })
 
   /**
@@ -99,28 +119,34 @@ async function init() {
 
     // ---- Time update ---- //
     timer.update()
+    const delta = timer.getDelta()
     const t = timer.getElapsed()
 
     // ---- World Animation update---- //
     grassMaterial.uniforms.uTime.value = t
     waterMaterial.uniforms.uTime.value = t
 
+    // ---- Play animation ---- //
+    for (const mixer of mixers) {
+      mixer.update(delta)
+    }
+
     // ---- Raycaster update ---- //
     raycaster.setFromCamera(mouseTracker.coords, camera)
-    const intersects = raycaster.intersectObjects(interactiveObjects, true)
-
-    for (const object of interactiveObjects) {
-      object.scale.setScalar(1)
-    }
-    for (const intersect of intersects) {
-      intersect.object.scale.setScalar(1.2)
-    }
+    const intersects = raycaster.intersectObjects(interactiveObjects, false)
+    let newHoveredModel = null
 
     if (intersects.length) {
       currentIntersect = intersects[0]
+      newHoveredModel = getModelFromIntersectedObject(currentIntersect.object)
+
+      renderer.domElement.style.cursor = newHoveredModel ? "pointer" : "default"
     } else {
       currentIntersect = null
+      renderer.domElement.style.cursor = "default"
     }
+
+    hoveredModel = updateHoverState(hoveredModel, newHoveredModel)
 
     // ---- Render ---- //
     renderer.render(scene, camera)
