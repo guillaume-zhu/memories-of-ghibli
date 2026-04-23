@@ -118,7 +118,7 @@ async function init() {
     // Gold Animation
     for (const material of magicGoldMaterials) {
       if ("emissiveIntensity" in material) {
-        material.emissiveIntensity = 2.5 + Math.sin(t * 4) * 0.2
+        material.emissiveIntensity = 2.5 + Math.sin(t * 4) * 0.4
       }
     }
 

@@ -510,6 +510,23 @@ export const loadModels = ({
     outlineHoverThickness: 0.05,
   })
 
+  // ---- totoro ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/totoro.glb",
+    position: [-10, -1, -10],
+    rotation: [Math.PI * -0.5, 0, Math.PI * 0.5],
+    scale: 0.25,
+    interactive: true,
+    hitboxScale: [0.7, 1, 1],
+    showHitbox: true,
+    outlineBaseThickness: 0.005,
+    outlineHoverThickness: 0.01,
+  })
+
   // ---- warawara ----
   loadInteractiveModel({
     gltfLoader,
