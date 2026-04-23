@@ -1,8 +1,7 @@
 import "./style.css"
 import * as THREE from "three"
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js"
-import { DRACOLoader } from "three/examples/jsm/Addons.js"
-import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js"
+
+import { loadModels } from "./models/loadModels.js"
 
 import { createSetup } from "./scene/setup.js"
 import { loadPlatform } from "./world/platform.js"
@@ -14,8 +13,7 @@ import { createLights } from "./scene/lights.js"
 import { CameraControls } from "./controls/CameraControls.js"
 import { MouseTracker } from "./controls/MouseTracker.js"
 
-import { createBoxHitbox } from "./utils/createBoxHitbox.js"
-import { createGlobalHull } from "./utils/createGlobalHull.js"
+import { loadInteractiveModel } from "./utils/loadInteractiveModel.js"
 import { updateHoverState } from "./utils/updateHoverState.js"
 import { registerInteractiveModel } from "./utils/registerInteractiveModel.js"
 import { getModelFromIntersectedObject } from "./utils/getModelFromIntersectedObject.js"
@@ -33,6 +31,10 @@ const interactiveObjects = []
 let currentIntersect = null
 let hoveredModel = null
 const mixers = []
+
+/**
+ * Helper
+ */
 
 /**
  * User interactions
@@ -60,6 +62,10 @@ async function init() {
    */
   const { scene, camera, renderer } = createSetup()
 
+  const gridHelper = new THREE.GridHelper(100, 100)
+  scene.add(gridHelper)
+  gridHelper.position.y = 0.5
+
   /**
    * Camera controls
    */
@@ -80,34 +86,9 @@ async function init() {
   const waterMaterial = createWater(scene)
 
   /**
-   * Models
+   * Models import
    */
-  const dracoLoader = new DRACOLoader()
-  dracoLoader.setDecoderPath("/draco/")
-
-  const gltfLoader = new GLTFLoader()
-  gltfLoader.setDRACOLoader(dracoLoader)
-  gltfLoader.setMeshoptDecoder(MeshoptDecoder)
-
-  // ---- Warawara test ----
-  gltfLoader.load("models/Warawara.glb", (gltf) => {
-    console.log("warawara chargé", gltf)
-
-    const model = gltf.scene
-    scene.add(model)
-
-    model.position.z = -10
-    model.position.y = 5
-
-    registerInteractiveModel(model, interactiveObjects, {
-      hitboxScale: [1, 1, 1],
-      showHitbox: true,
-      outlineBaseThickness: 0.03,
-      outlineHoverThickness: 1.6,
-    })
-
-    setupModelAnimation(model, gltf, mixers)
-  })
+  loadModels({ scene, interactiveObjects, mixers })
 
   /**
    * Animation loop

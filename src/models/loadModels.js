@@ -1,0 +1,311 @@
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js"
+import { DRACOLoader } from "three/examples/jsm/Addons.js"
+import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js"
+
+import { loadInteractiveModel } from "../utils/loadInteractiveModel.js"
+
+export const loadModels = ({ scene, interactiveObjects, mixers }) => {
+  const dracoLoader = new DRACOLoader()
+  dracoLoader.setDecoderPath("/draco/")
+
+  const gltfLoader = new GLTFLoader()
+  gltfLoader.setDRACOLoader(dracoLoader)
+  gltfLoader.setMeshoptDecoder(MeshoptDecoder)
+
+  // ---- Avion ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/avion.glb",
+    position: [25, 10, -100],
+    rotation: [0, Math.PI * 1.5, 0],
+    interactive: true,
+    animated: true,
+    hitboxScale: [1, 1, 1],
+    showHitbox: true,
+  })
+
+  // ---- Adriano ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/adriano.glb",
+    position: [0, -3, -125],
+    scale: 0.5,
+    interactive: true,
+    hitboxScale: [0.7, 1, 0.3],
+    showHitbox: true,
+    // outlineBaseThickness: 0.001,
+    // outlineHoverThickness: 0.001,
+  })
+
+  // ---- Balais KIki ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/balais-kiki.glb",
+    position: [-2, 8, -5],
+    rotation: [0, Math.PI * 0.5, 0],
+    scale: 0.07,
+    interactive: true,
+    hitboxScale: [1, 1, 1],
+    showHitbox: true,
+    outlineBaseThickness: 0.1,
+    outlineHoverThickness: 0.2,
+  })
+
+  // ---- Bateau Ponyo ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/bateau-ponyo.glb",
+    position: [0, -3, -90],
+    rotation: [0, Math.PI * 0.5, 0],
+    interactive: true,
+    hitboxScale: [1, 1, 1],
+    showHitbox: true,
+    outlineBaseThickness: 0.03,
+    outlineHoverThickness: 0.05,
+  })
+
+  // ---- Chapeau de paille ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/chapeau-paille.glb",
+    position: [-1, 1, -10],
+    scale: 0.2,
+    interactive: true,
+    hitboxScale: [1, 1, 1],
+    showHitbox: true,
+    outlineBaseThickness: 0.05,
+    outlineHoverThickness: 0.1,
+    onLoad: (model) => {
+      model.traverse((child) => {
+        if (!child.isMesh || !child.material) return
+
+        const materials = Array.isArray(child.material) ? child.material : [child.material]
+
+        materials.forEach((mat) => {
+          if (mat.map) {
+            mat.emissiveMap = mat.map
+            mat.emissive.set(0xffffff)
+            mat.emissiveIntensity = 1.5
+          }
+
+          if ("aoMapIntensity" in mat) {
+            mat.aoMapIntensity = 0
+          }
+
+          mat.needsUpdate = true
+        })
+      })
+    },
+  })
+
+  // ---- Calcifer ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/calcifer.glb",
+    position: [20, 1, -15],
+    scale: 0.3,
+    interactive: true,
+    animated: true,
+    hitboxScale: [0.3, 0.5, 0.3],
+    showHitbox: true,
+  })
+
+  // ---- Chihiro ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/chihiro.glb",
+    position: [8, 0, -10],
+    rotation: [0, Math.PI * 1.5, 0],
+    scale: 0.35,
+    interactive: true,
+    animated: true,
+    hitboxScale: [0.3, 1, 1],
+    showHitbox: true,
+  })
+
+  // ---- Canne ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/canne.glb",
+    position: [5, 2, -10],
+    scale: 2,
+    interactive: true,
+    hitboxScale: [1, 1, 1],
+    showHitbox: true,
+    outlineBaseThickness: 0.05,
+    outlineHoverThickness: 0.1,
+  })
+
+  // ---- Canne ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/canne.glb",
+    position: [5, 2, -10],
+    scale: 2,
+    interactive: true,
+    hitboxScale: [1, 1, 1],
+    showHitbox: true,
+    outlineBaseThickness: 0.05,
+    outlineHoverThickness: 0.1,
+  })
+
+  // ---- Couteau ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/couteau.glb",
+    position: [-10, 10, -10],
+    rotation: [0, 0, Math.PI * -0.75],
+    scale: 0.002,
+    interactive: true,
+    hitboxScale: [1, 1, 1],
+    showHitbox: true,
+    // outlineBaseThickness: 2,
+    // outlineHoverThickness: 40000,
+  })
+
+  // ---- Epouvantail ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/epouvantail.glb",
+    position: [10, 2, -100],
+    scale: 0.5,
+    interactive: true,
+    hitboxScale: [0.8, 1, 1],
+    showHitbox: true,
+  })
+
+  // ---- Fleche ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/fleche.glb",
+    position: [15, 3, -15],
+    scale: 1,
+    rotation: [Math.PI * 0.5, 0, Math.PI * 0.5],
+    interactive: true,
+    hitboxScale: [1, 1, 1],
+    showHitbox: true,
+    outlineBaseThickness: 0.01,
+    outlineHoverThickness: 0.015,
+  })
+
+  // ---- Kiki ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/kiki.glb",
+    position: [-5, 0, -10],
+    rotation: [0, Math.PI, 0],
+    scale: 2.75,
+    interactive: true,
+    hitboxScale: [1, 1, 1],
+    showHitbox: true,
+    outlineBaseThickness: 0.01,
+    outlineHoverThickness: 0.015,
+  })
+
+  // ---- Kodama ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/kodama.glb",
+    position: [-7, 0, -10],
+    rotation: [0, -Math.PI * 0.5, 0],
+    scale: 0.05,
+    interactive: true,
+    hitboxScale: [0.5, 1, 1],
+    showHitbox: true,
+    outlineBaseThickness: 0.05,
+    outlineHoverThickness: 0.1,
+  })
+
+  // ---- Lanterne ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/lanterne.glb",
+    position: [-9, 0, -10],
+    rotation: [0, Math.PI * 0.5, 0],
+    scale: 5,
+    interactive: true,
+    hitboxScale: [1, 1, 1],
+    showHitbox: true,
+    outlineBaseThickness: 0.005,
+    outlineHoverThickness: 0.01,
+  })
+
+  // ---- Masque Sans Visage ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/masque-sans-visage.glb",
+    position: [-3, 1, -10],
+    rotation: [0, Math.PI * -0.5, 0],
+    scale: 1.8,
+    interactive: true,
+    hitboxScale: [1, 1, 1],
+    showHitbox: true,
+    outlineBaseThickness: 0.03,
+    outlineHoverThickness: 0.04,
+  })
+
+  // ---- Masque Mononoke ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/masque-mononoke.glb",
+    position: [1, 1, -10],
+    rotation: [Math.PI * -0.25, 0, 0],
+    scale: 0.5,
+    interactive: true,
+    hitboxScale: [1, 1, 1],
+    showHitbox: true,
+    outlineBaseThickness: 0.05,
+    outlineHoverThickness: 0.1,
+  })
+}
