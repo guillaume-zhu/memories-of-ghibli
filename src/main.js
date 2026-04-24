@@ -1,5 +1,6 @@
 import "./style.css"
 import * as THREE from "three"
+import Stats from "three/examples/jsm/libs/stats.module.js"
 
 import { loadModels } from "./models/loadModels.js"
 
@@ -62,6 +63,22 @@ async function init() {
    */
   const { scene, camera, renderer } = createSetup()
 
+  /**
+   * Renderer and stat info panel
+   */
+  const stats = new Stats()
+  stats.showPanel(0)
+  document.body.appendChild(stats.dom)
+
+  stats.dom.style.position = "fixed"
+  stats.dom.style.top = "0px"
+  stats.dom.style.left = "0px"
+  stats.dom.style.zIndex = "999"
+
+  const debugPanel = document.createElement("div")
+  debugPanel.className = "debug-panel"
+  document.body.appendChild(debugPanel)
+
   const gridHelper = new THREE.GridHelper(100, 100)
   scene.add(gridHelper)
   gridHelper.position.y = 0.5
@@ -100,6 +117,8 @@ async function init() {
 
   function animate() {
     requestAnimationFrame(animate)
+
+    stats.begin()
 
     // ---- Time update ---- //
     timer.update()
@@ -146,6 +165,15 @@ async function init() {
 
     // ---- Render ---- //
     renderer.render(scene, camera)
+
+    debugPanel.innerHTML = `
+  Triangles: ${renderer.info.render.triangles}<br>
+  Draw calls: ${renderer.info.render.calls}<br>
+  Geometries: ${renderer.info.memory.geometries}<br>
+  Textures: ${renderer.info.memory.textures}
+`
+
+    stats.end()
   }
 
   animate()
