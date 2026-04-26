@@ -6,7 +6,7 @@ export function loadMountain(scene) {
   loader.load('/models/mountain.glb', (gltf) => {
     const mountain = gltf.scene
 
-    mountain.position.set(40, -3, -80)
+    mountain.position.set(50, -3, -100)
     mountain.scale.setScalar(1)
     mountain.rotation.y = -Math.PI / 1.5
 
