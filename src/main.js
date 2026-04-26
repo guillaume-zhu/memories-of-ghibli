@@ -10,9 +10,8 @@ import { createWater } from "./world/water.js"
 import { createGrass } from "./world/grass.js"
 import { createSky } from "./world/sky.js"
 import { createLights } from "./scene/lights.js"
-import { loadMountain } from './world/mountain.js'
-import { createWaterfall } from './world/waterfall.js'
-import { loadTrain } from './world/train.js'
+import { loadMountain } from "./world/mountain.js"
+import { createWaterfall } from "./world/waterfall.js"
 
 import { CameraControls } from "./controls/CameraControls.js"
 import { MouseTracker } from "./controls/MouseTracker.js"
@@ -113,7 +112,6 @@ async function init() {
   const grassMaterial = createGrass(scene, platform)
   const waterMaterial = createWater(scene)
   const waterfallMaterial = createWaterfall(scene)
-  const train = loadTrain(scene)
   loadMountain(scene)
 
   /**
@@ -121,8 +119,16 @@ async function init() {
    */
   const magicGoldMaterials = []
   const magicGoldModels = []
+  const modelAnimations = []
 
-  loadModels({ scene, interactiveObjects, mixers, magicGoldMaterials, magicGoldModels })
+  loadModels({
+    scene,
+    interactiveObjects,
+    mixers,
+    magicGoldMaterials,
+    magicGoldModels,
+    modelAnimations,
+  })
 
   /**
    * Animation loop
@@ -143,7 +149,6 @@ async function init() {
     grassMaterial.uniforms.uTime.value = t
     waterMaterial.uniforms.uTime.value = t
     waterfallMaterial.uniforms.uTime.value = t
-    train.update(delta)
 
     // ---- Play animation ---- //
     for (const mixer of mixers) {
@@ -156,10 +161,14 @@ async function init() {
         material.emissiveIntensity = 2.5 + Math.sin(t * 4) * 0.4
       }
     }
-
     for (const model of magicGoldModels) {
       model.position.y = model.userData.baseY + Math.sin(t * 2) * 0.08
       model.rotation.y += 0.01
+    }
+
+    // Custom model animation
+    for (const updateModelAnimation of modelAnimations) {
+      updateModelAnimation(delta, t)
     }
 
     // ---- Raycaster update ---- //

@@ -4,12 +4,42 @@ import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js"
 
 import { loadInteractiveModel } from "../utils/loadInteractiveModel.js"
 
+const createTrainXAnimation = (model, { distance = 9, speed = 3, pauseDuration = 2.5 } = {}) => {
+  const startX = model.position.x
+  const endX = startX + distance
+
+  let direction = 1
+  let pauseTimer = pauseDuration
+
+  return (delta) => {
+    if (pauseTimer > 0) {
+      pauseTimer -= delta
+      return
+    }
+
+    model.position.x += direction * speed * delta
+
+    if (direction === 1 && model.position.x >= endX) {
+      model.position.x = endX
+      direction = -1
+      pauseTimer = pauseDuration
+    }
+
+    if (direction === -1 && model.position.x <= startX) {
+      model.position.x = startX
+      direction = 1
+      pauseTimer = pauseDuration
+    }
+  }
+}
+
 export const loadModels = ({
   scene,
   interactiveObjects,
   mixers,
   magicGoldMaterials,
   magicGoldModels,
+  modelAnimations = [],
 }) => {
   const dracoLoader = new DRACOLoader()
   dracoLoader.setDecoderPath("/draco/")
@@ -609,16 +639,22 @@ export const loadModels = ({
     interactiveObjects,
     mixers,
     path: "models/train.glb",
-    position: [40, 20, -170],
+    position: [42, 6.8, -91],
     rotation: [0, 0, 0],
-    scale: 1,
+    scale: 0.3,
     interactive: true,
     hitboxScale: [1, 1, 1],
     showHitbox: false,
-    outlineBaseThickness: 0.025,
-    outlineHoverThickness: 0.05,
+    outlineBaseThickness: 0.01,
+    outlineHoverThickness: 0.02,
     onLoad: (model) => {
-      model.userData.modelKey = "train"
+      modelAnimations.push(
+        createTrainXAnimation(model, {
+          distance: 9,
+          speed: 3,
+          pauseDuration: 2.5,
+        }),
+      )
     },
   })
 
