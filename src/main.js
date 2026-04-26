@@ -13,7 +13,7 @@ import { createLights } from "./scene/lights.js"
 
 import { CameraControls } from "./controls/CameraControls.js"
 import { MouseTracker } from "./controls/MouseTracker.js"
-import { openHUD } from "./HUD.js"
+import { openHUD } from "./hud/HUD.js"
 import { MODELS_DATA } from "./data/models.js"
 
 import { loadInteractiveModel } from "./utils/loadInteractiveModel.js"

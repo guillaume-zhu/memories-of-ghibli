@@ -7,7 +7,7 @@
 
 @font-face {
     font-family: "Police-Ghibli"; /* Le nom que tu choisiras pour l'utiliser plus tard */
-    src: url("fonts/AvantGarde-Medium.otf") format("opentype"); /* Vérifie bien le chemin et le format */
+    src: url("/fonts/AvantGarde-Medium.otf") format("opentype"); /* Vérifie bien le chemin et le format */
     font-weight: normal;
     font-style: normal;
 }
@@ -18,12 +18,12 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background: url("./img/fond-genshin.png") no-repeat center center fixed;
+    background: url("/img/fond-genshin.png") no-repeat center center fixed;
     background-size: cover;
     font-family: "Police-Ghibli", sans-serif;
     cursor: image-set(
-        url("./img/Figma-Cursor.png") 1x,
-        url("./img/Figma-Cursor.png") 2x
+        url("/img/Figma-Cursor.png") 1x,
+        url("/img/Figma-Cursor.png") 2x
     );
     ul {
         list-style-type: none;
@@ -90,7 +90,7 @@ body {
 /* Zone 3D */
 .model-viewport {
     /* background: #000; */
-    background: url("../img/Arc-Mahito-ex.png") no-repeat center center;
+    background: url("/img/Arc-Mahito-ex.png") no-repeat center center;
     border: var(--border-width) solid var(--border-color);
     border-radius: 25px;
     height: 300px;
