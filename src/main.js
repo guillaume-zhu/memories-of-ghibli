@@ -10,6 +10,9 @@ import { createWater } from "./world/water.js"
 import { createGrass } from "./world/grass.js"
 import { createSky } from "./world/sky.js"
 import { createLights } from "./scene/lights.js"
+import { loadMountain } from './world/mountain.js'
+import { createWaterfall } from './world/waterfall.js'
+import { loadTrain } from './world/train.js'
 
 import { CameraControls } from "./controls/CameraControls.js"
 import { MouseTracker } from "./controls/MouseTracker.js"
@@ -109,6 +112,9 @@ async function init() {
   const platform = await loadPlatform(scene)
   const grassMaterial = createGrass(scene, platform)
   const waterMaterial = createWater(scene)
+  const waterfallMaterial = createWaterfall(scene)
+  const train = loadTrain(scene)
+  loadMountain(scene)
 
   /**
    * Models import
@@ -136,6 +142,8 @@ async function init() {
     // ---- World Animation update---- //
     grassMaterial.uniforms.uTime.value = t
     waterMaterial.uniforms.uTime.value = t
+    waterfallMaterial.uniforms.uTime.value = t
+    train.update(delta)
 
     // ---- Play animation ---- //
     for (const mixer of mixers) {
