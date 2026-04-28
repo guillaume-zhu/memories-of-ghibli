@@ -2,7 +2,7 @@
     --bg-color: #e9e0db; /* Couleur de fond des boutons */
     --border-color: #000000;
     --border-width: 4px;
-    --font-lexend: 'Lexend', sans-serif;
+    --font-lexend: "Lexend", sans-serif;
 }
 
 @font-face {
@@ -45,13 +45,35 @@ body {
 
 .icon-right {
     position: absolute;
+    height: auto;
     right: 100px;
     top: 40px;
 }
 
+.flex-cross {
+    display: flex;
+    justify-content: right;
+    align-items: right;
+    margin-bottom: 20px;
+}
+
+#hud-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* .icon-right img {
+    margin: auto;
+    width: 60px;
+    height: auto;
+} */
+
 .score-counter {
     margin: auto;
-    font-size: 25px;
+    font-size: 20px;
     font-family: "Police-Ghibli", sans-serif;
     margin-top: 10px;
 }
@@ -78,8 +100,6 @@ body {
     width: 800px;
     text-align: center;
 }
-
-
 
 .quiz-title {
     font-size: 28px;
@@ -139,7 +159,7 @@ body {
 /* Boutons de réponse — Style cartoon WikiLearn */
 .answer-btn {
     position: relative;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     border: 2px solid #000000;
     border-radius: 19px;
     box-shadow: 4px 4px 0px #000000;
@@ -158,12 +178,15 @@ body {
     /* Effet text-shadow cartoon (contour noir) */
     text-shadow:
         -1.5px -1.5px 0 #000,
-         1.5px -1.5px 0 #000,
-        -1.5px  1.5px 0 #000,
-         1.5px  1.5px 0 #000,
-         0px 2.5px 0 #000;
-    color: #FFFFFF;
-    transition: transform 0.2s ease, box-shadow 0.15s ease, background-color 0.2s ease;
+        1.5px -1.5px 0 #000,
+        -1.5px 1.5px 0 #000,
+        1.5px 1.5px 0 #000,
+        0px 2.5px 0 #000;
+    color: #ffffff;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.15s ease,
+        background-color 0.2s ease;
 }
 
 .answer-btn:hover {
@@ -178,26 +201,39 @@ body {
 
 /* Bonne réponse → fond vert */
 .answer-correct {
-    background-color: #8ECC7F !important;
+    background-color: #8ecc7f !important;
     border-color: #000000;
     pointer-events: none;
 }
 
 /* Mauvaise réponse → fond rouge + tremblement */
 .answer-wrong {
-    background-color: #E35050 !important;
+    background-color: #e35050 !important;
     border-color: #000000;
     animation: shake 0.4s ease-in-out;
     pointer-events: none;
 }
 
 @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    15%      { transform: translateX(-6px); }
-    30%      { transform: translateX(5px); }
-    45%      { transform: translateX(-4px); }
-    60%      { transform: translateX(3px); }
-    75%      { transform: translateX(-2px); }
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    15% {
+        transform: translateX(-6px);
+    }
+    30% {
+        transform: translateX(5px);
+    }
+    45% {
+        transform: translateX(-4px);
+    }
+    60% {
+        transform: translateX(3px);
+    }
+    75% {
+        transform: translateX(-2px);
+    }
 }
 
 /* Bouton d'action (continuer, retrouver la mémoire) — Style WikiLearn */
@@ -214,12 +250,14 @@ body {
     /* Texte cartoon blanc avec contour */
     text-shadow:
         -1.5px -1.5px 0 #000,
-         1.5px -1.5px 0 #000,
-        -1.5px  1.5px 0 #000,
-         1.5px  1.5px 0 #000,
-         0px 2.5px 0 #000;
-    color: #FFFFFF;
-    transition: transform 0.2s ease, box-shadow 0.15s ease;
+        1.5px -1.5px 0 #000,
+        -1.5px 1.5px 0 #000,
+        1.5px 1.5px 0 #000,
+        0px 2.5px 0 #000;
+    color: #ffffff;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.15s ease;
 }
 
 .submit-btn:hover {

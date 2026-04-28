@@ -36,8 +36,12 @@
                     style="cursor: pointer"
                 />
                 <div class="icon-right">
-                    <img src="./img/puzzle-vector.png" alt="" />
-                    <p class="score-counter">0/25</p>
+                    <img
+                        src="./img/puzzle-vector.png"
+                        alt="icone de puzzle"
+                        class=""
+                    />
+                    <p class="score-counter">0 / 25</p>
                 </div>
             </div>
         </header>
@@ -74,21 +78,22 @@
                     class="quiz-container"
                     style="display: none"
                 >
-                    <button
-                        id="hud-close"
-                        style="
-                            position: absolute;
-                            top: 16px;
-                            right: 20px;
-                            background: none;
-                            border: none;
-                            font-size: 2rem;
-                            cursor: pointer;
-                            font-weight: bold;
-                        "
-                    >
-                        ✕
-                    </button>
+                    <div class="flex-cross">
+                        <!-- <button
+                            id="hud-close"
+                            style="
+                                position: absolute;
+                                top: 16px;
+                                right: 20px;
+                                background: none;
+                                border: none;
+                                font-size: 2rem;
+                                cursor: pointer;
+                                font-weight: bold;
+                            "
+                        > -->
+                        <button id="hud-close">✕</button>
+                    </div>
                     <h1 class="quiz-title">
                         DANS LEQUEL DE CES FILMS CET OBJET EST PRÉSENT ?
                     </h1>

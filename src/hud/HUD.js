@@ -97,7 +97,7 @@ function updateScore() {
         currentData.isFound = true; // On marque l'objet comme "trouvé"
 
         const el = document.querySelector(".score-counter");
-        if (el) el.innerText = `${score}/22`;
+        if (el) el.innerText = `${score} / 25`;
 
         console.log("Nouveau score :", score);
     } else {
@@ -112,33 +112,38 @@ export function openHUD(data) {
 
     if (interfaceMain) interfaceMain.style.display = "flex";
 
-    // Image de l'objet
-    const questionImg = document.getElementById("question-image");
-    if (questionImg)
-        questionImg.style.backgroundImage = `url(${data.imageObjet})`;
+    // --- LOGIQUE DE FILTRAGE ---
+    if (data.isFound) {
+        // Cas : Déjà trouvé -> On affiche directement l'anecdote
+        showAnecdote();
+        document.getElementById("screen-rules").style.display = "none";
+    } else {
+        // Cas : Nouveau -> On affiche le quiz classique
+        const questionImg = document.getElementById("question-image");
+        if (questionImg)
+            questionImg.style.backgroundImage = `url(${data.imageObjet})`;
 
-    // Génération des boutons de réponse
-    const answersContainer = document.getElementById("answers-list");
-    if (answersContainer) {
-        answersContainer.innerHTML = "";
-        data.choix.forEach((choix) => {
-            const btn = document.createElement("button");
-            btn.classList.add("answer-btn");
-            btn.innerText = choix;
-            btn.onclick = (e) => {
-                e.stopPropagation();
-                handleAnswer(btn, choix, data, answersContainer);
-            };
-            answersContainer.appendChild(btn);
-        });
+        const answersContainer = document.getElementById("answers-list");
+        if (answersContainer) {
+            answersContainer.innerHTML = "";
+            data.choix.forEach((choix) => {
+                const btn = document.createElement("button");
+                btn.classList.add("answer-btn");
+                btn.innerText = choix;
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    handleAnswer(btn, choix, data, answersContainer);
+                };
+                answersContainer.appendChild(btn);
+            });
+        }
+
+        document.getElementById("screen-rules").style.display = "none";
+        document.getElementById("screen-anecdote").style.display = "none";
+        document.getElementById("screen-quiz").style.display = "block";
     }
 
-    // Affichage des écrans
-    document.getElementById("screen-rules").style.display = "none";
-    document.getElementById("screen-anecdote").style.display = "none";
-    document.getElementById("screen-quiz").style.display = "block";
-
-    // Fermeture via overlay et croix
+    // --- FERMETURE ---
     const overlay = document.getElementById("hud-overlay");
     if (overlay)
         overlay.onclick = (e) => {
@@ -154,19 +159,15 @@ export function openHUD(data) {
         };
 }
 
-// --- Initialisation automatique des règles avec un petit délai ---
+// --- Initialisation automatique des règles ---
 document.addEventListener("DOMContentLoaded", () => {
     const interfaceMain = document.querySelector("main");
     const rulesScreen = document.getElementById("screen-rules");
 
     if (interfaceMain && rulesScreen) {
-        // On attend 500ms (tu peux ajuster ce chiffre)
         setTimeout(() => {
-            interfaceMain.style.display = "flex"; // On rend le conteneur actif
-            rulesScreen.style.display = "block"; // On affiche les règles
-
-            // timing de l'Animation
-            console.log("Animation des règles lancée !");
+            interfaceMain.style.display = "flex";
+            rulesScreen.style.display = "block";
         }, 2000);
     }
 });
