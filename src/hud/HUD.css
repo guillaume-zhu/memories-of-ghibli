@@ -18,7 +18,6 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background: url("/img/fond-genshin.png") no-repeat center center fixed;
     background-size: cover;
     font-family: "Police-Ghibli", sans-serif;
     cursor: image-set(

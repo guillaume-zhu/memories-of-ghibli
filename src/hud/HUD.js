@@ -1,4 +1,10 @@
-// --- HUD.js — Module ES6 ---
+// fonction du son:
+
+function playSound(file, vol = 1.0) {
+    let audio = new Audio(file);
+    audio.volume = vol;
+    audio.play();
+}
 
 // --- Empêcher les clics dans le HUD de traverser vers la scène 3D ---
 document.addEventListener("DOMContentLoaded", () => {
@@ -34,6 +40,7 @@ window.closeRules = function () {
     const interfaceMain = document.querySelector("main");
 
     rulesScreen.classList.add("pop-out");
+    playSound("/sound/wind-sound.mp3", 0.5);
 
     setTimeout(() => {
         rulesScreen.style.display = "none";
@@ -66,11 +73,15 @@ function handleAnswer(btn, choix, data, container) {
         container.querySelectorAll(".answer-btn").forEach((b) => {
             b.style.pointerEvents = "none";
         });
+
+        playSound("/sound/correct.wav", 0.5);
+
         // Transition vers l'anecdote après un court délai
         setTimeout(() => showAnecdote(), 800);
     } else {
         // Mauvaise réponse → rouge + shake, ce bouton uniquement est désactivé
         btn.classList.add("answer-wrong");
+        playSound("/sound/wrong.wav");
     }
 }
 
