@@ -35,7 +35,7 @@ export function createSky(scene) {
     const skyMat = new THREE.ShaderMaterial({
         uniforms: {
             // Couleurs ajustées pour un look plus "bleu ciel" et lumineux
-            topColor: { value: new THREE.Color("#0077ff") },    // Bleu ciel saturé
+            topColor: { value: new THREE.Color("#2580e7") },    // Bleu ciel saturé
             bottomColor: { value: new THREE.Color("#87ceeb") }, // Bleu azur clair
             horizonColor: { value: new THREE.Color("#ffffff") }, // Blanc lumineux pour l'horizon
             exponent: { value: 0.5 }
