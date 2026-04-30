@@ -724,8 +724,8 @@ export const loadModels = ({ scene, interactiveObjects, mixers, modelAnimations 
     interactiveObjects,
     mixers,
     path: "models/warawara.glb",
-    position: [5, 5, -25],
-    rotation: [0, -Math.PI * 0.5, 0],
+    position: [11, 4.5, -30],
+    rotation: [0, -Math.PI * 0.75, Math.PI * 0.1],
     scale: 1,
     interactive: true,
     hitboxScale: [1, 1, 1],
@@ -787,8 +787,8 @@ export const loadModels = ({ scene, interactiveObjects, mixers, modelAnimations 
 
         // fleurs
         if (child.name.includes("rsSprite1") || child.material.name.includes("rsSprite1")) {
-          child.material.color.set("#dde6dd")
-          // child.material.color.multiplyScalar(0.8)
+          child.material.color.set("#fff2e7")
+          child.material.color.multiplyScalar(1)
         }
 
         if ("envMapIntensity" in child.material) {
@@ -820,6 +820,102 @@ export const loadModels = ({ scene, interactiveObjects, mixers, modelAnimations 
         if (!child.isMesh || !child.material) return
 
         child.material.color.multiplyScalar(0.6)
+      })
+    },
+  })
+
+  // ---- rock ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/assets/rock.glb",
+    position: [6, 0, -24],
+    rotation: [0, Math.PI * 0.5, 0],
+    scale: 0.005,
+    interactive: true,
+    hitboxScale: [0, 0, 0],
+    showHitbox: false,
+    outlineBaseThickness: 0.01,
+    outlineHoverThickness: 0.01,
+    onLoad: (model) => {
+      model.traverse((child) => {
+        if (!child.isMesh || !child.material) return
+
+        child.material.color.multiplyScalar(1.5)
+      })
+    },
+  })
+
+  // ---- rock2 ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/assets/rock.glb",
+    position: [5, 0, -25],
+    rotation: [0, 0, 0],
+    scale: 0.0075,
+    interactive: true,
+    hitboxScale: [0, 0, 0],
+    showHitbox: false,
+    outlineBaseThickness: 0.01,
+    outlineHoverThickness: 0.01,
+    onLoad: (model) => {
+      model.traverse((child) => {
+        if (!child.isMesh || !child.material) return
+
+        child.material.color.multiplyScalar(1.5)
+      })
+    },
+  })
+
+  // ---- tree-v1 ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/assets/tree-v1.glb",
+    position: [-10, 0, -30],
+    rotation: [0, Math.PI * 0.25, 0],
+    scale: 1,
+    interactive: true,
+    hitboxScale: [0, 0, 0],
+    showHitbox: false,
+    // outlineBaseThickness: 0.0,
+    // outlineHoverThickness: 0.0,
+    onLoad: (model) => {
+      model.traverse((child) => {
+        if (!child.isMesh || !child.material) return
+
+        child.material.color.multiplyScalar(0.7)
+      })
+    },
+  })
+
+  // ---- rockcenter ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/assets/rock.glb",
+    position: [0, 0, -20],
+    rotation: [0, Math.PI * 0.5, 0],
+    scale: 0.005,
+    interactive: true,
+    hitboxScale: [0, 0, 0],
+    showHitbox: false,
+    outlineBaseThickness: 0.01,
+    outlineHoverThickness: 0.01,
+    onLoad: (model) => {
+      model.traverse((child) => {
+        if (!child.isMesh || !child.material) return
+
+        child.material.color.multiplyScalar(1.5)
       })
     },
   })

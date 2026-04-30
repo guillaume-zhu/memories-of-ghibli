@@ -29,7 +29,7 @@ export function createSetup() {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   renderer.outputColorSpace = THREE.SRGBColorSpace
   renderer.toneMapping = THREE.LinearToneMapping
-  renderer.toneMappingExposure = 1.0
+  renderer.toneMappingExposure = 1
 
   /**
    * Resize

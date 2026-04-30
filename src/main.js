@@ -3,6 +3,7 @@ import * as THREE from "three"
 import Stats from "three/examples/jsm/libs/stats.module.js"
 
 import { loadModels } from "./models/loadModels.js"
+import GUI from "three/examples/jsm/libs/lil-gui.module.min.js"
 
 import { createSetup } from "./scene/setup.js"
 import { loadPlatform } from "./world/platform.js"
@@ -117,8 +118,73 @@ async function init() {
   /**
    * Environment
    */
-  createLights(scene)
+  const { hemi, sun, fill, sunHelper, fillHelper } = createLights(scene)
   createSky(scene)
+
+  /**
+   * GUI
+   */
+  const gui = new GUI()
+
+  const toneMappingOptions = {
+    No: THREE.NoToneMapping,
+    Linear: THREE.LinearToneMapping,
+    Reinhard: THREE.ReinhardToneMapping,
+    Cineon: THREE.CineonToneMapping,
+    ACESFilmic: THREE.ACESFilmicToneMapping,
+  }
+
+  const renderParams = {
+    toneMapping: "Linear",
+    exposure: 1.0,
+  }
+
+  const debugParams = {
+    showLightHelpers: true,
+  }
+
+  // Hemisphere
+  const hemiFolder = gui.addFolder("Hemisphere")
+  hemiFolder.add(hemi, "intensity", 0, 2, 0.01)
+
+  // Sun
+  const sunFolder = gui.addFolder("Sun")
+  sunFolder.add(sun, "intensity", 0, 3, 0.01)
+  sunFolder.add(sun.position, "x", -50, 50, 0.1).onChange(() => sunHelper.update())
+  sunFolder.add(sun.position, "y", 0, 50, 0.1).onChange(() => sunHelper.update())
+  sunFolder.add(sun.position, "z", -50, 50, 0.1).onChange(() => sunHelper.update())
+  sunFolder.add(sun.target.position, "x", -50, 50, 0.1).onChange(() => sunHelper.update())
+  sunFolder.add(sun.target.position, "y", -10, 20, 0.1).onChange(() => sunHelper.update())
+  sunFolder.add(sun.target.position, "z", -100, 20, 0.1).onChange(() => sunHelper.update())
+
+  // Fill
+  const fillFolder = gui.addFolder("Fill")
+  fillFolder.add(fill, "intensity", 0, 2, 0.01)
+  fillFolder.add(fill.position, "x", -50, 50, 0.1).onChange(() => fillHelper.update())
+  fillFolder.add(fill.position, "y", 0, 50, 0.1).onChange(() => fillHelper.update())
+  fillFolder.add(fill.position, "z", -50, 50, 0.1).onChange(() => fillHelper.update())
+  fillFolder.add(fill.target.position, "x", -50, 50, 0.1).onChange(() => fillHelper.update())
+  fillFolder.add(fill.target.position, "y", -10, 20, 0.1).onChange(() => fillHelper.update())
+  fillFolder.add(fill.target.position, "z", -100, 20, 0.1).onChange(() => fillHelper.update())
+
+  // Renderer
+  const rendererFolder = gui.addFolder("Renderer")
+  rendererFolder
+    .add(renderParams, "toneMapping", Object.keys(toneMappingOptions))
+    .onChange((value) => {
+      renderer.toneMapping = toneMappingOptions[value]
+    })
+
+  rendererFolder.add(renderParams, "exposure", 0, 3, 0.01).onChange((value) => {
+    renderer.toneMappingExposure = value
+  })
+
+  // Debug
+  const debugFolder = gui.addFolder("Debug")
+  debugFolder.add(debugParams, "showLightHelpers").onChange((value) => {
+    sunHelper.visible = value
+    fillHelper.visible = value
+  })
 
   /**
    * World elements
