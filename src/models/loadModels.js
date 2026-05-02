@@ -761,6 +761,7 @@ export const loadModels = ({
         outlineBaseThickness: 0.01,
         outlineHoverThickness: 0.02,
         onLoad: (model) => {
+            model.userData.modelKey = "train";
             modelAnimations.push(
                 createTrainXAnimation(model, {
                     distance: 20,
