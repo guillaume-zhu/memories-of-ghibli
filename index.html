@@ -26,6 +26,28 @@
     <body>
         <canvas class="webgl"></canvas>
         <script type="module" src="/src/main.js"></script>
+        <div id="loader-screen">
+            <div class="loader-content">
+                <h1 class="loader-title">MiyazaThree</h1>
+
+                <!-- La barre et le texte de progression -->
+                <div id="loader-progress-group">
+                    <div class="loader-bar-container">
+                        <div id="loader-bar"></div>
+                    </div>
+                    <p id="loader-text">Récupération de la mémoire... 0%</p>
+                </div>
+
+                <!-- Le bouton qui apparaîtra à la fin -->
+                <button
+                    id="launch-btn"
+                    style="display: none"
+                    class="submit-btn"
+                >
+                    Entrer dans le monde
+                </button>
+            </div>
+        </div>
         <header>
             <div class="icon-container">
                 <img
@@ -101,7 +123,12 @@
                         <div class="film-info">
                             <p id="film-title-year"></p>
                             <p id="film-note"></p>
-                            <a id="film-trailer" href="#" target="_blank" rel="noopener">
+                            <a
+                                id="film-trailer"
+                                href="#"
+                                target="_blank"
+                                rel="noopener"
+                            >
                                 ▶ Bande annonce
                             </a>
                             <p id="film-overview"></p>
