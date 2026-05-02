@@ -10,6 +10,7 @@ app.use(cors({ origin: 'http://localhost:5173' }))
 const PORT = process.env.PORT || 3000
 const TMDB_TOKEN = process.env.TMDB_BEARER_TOKEN
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3'
+console.log('Token TMDB:', TMDB_TOKEN ? '✓ OK' : '✗ AUCUN TOKEN')
 
 // ── Helper : récupère les données d'un film + son trailer en parallèle ──
 async function fetchFilmData(id) {
@@ -23,7 +24,6 @@ async function fetchFilmData(id) {
     const data = await movieRes.json()
     const videosData = await videosRes.json()
 
-    // Cherche un trailer YouTube
     const trailer = videosData.results?.find(
         v => v.type === 'Trailer' && v.site === 'YouTube'
     )
@@ -55,7 +55,7 @@ app.get('/api/movie/:id', async (req, res) => {
 })
 
 // ── ROUTE 2 : Tous les films Miyazaki — GET /api/films/miyazaki ──
-const MIYAZAKI_FILM_IDS = [129, 8392, 128, 4935, 16859, 11621, 12477, 10515, 12429, 149870, 614930]
+const MIYAZAKI_FILM_IDS = [129, 8392, 128, 4935, 16859, 11621, 12477, 10515, 12429, 149870, 508883]
 
 app.get('/api/films/miyazaki', async (req, res) => {
     try {

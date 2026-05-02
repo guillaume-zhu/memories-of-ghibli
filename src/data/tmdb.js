@@ -1,7 +1,6 @@
 const API_URL = 'http://localhost:3000'
 
 // Stockage en mémoire des films TMDB
-// Structure : { 129: { title, year, note, poster, trailerUrl, overview }, ... }
 export const FILMS_TMDB = {}
 
 export async function chargerFilmsTMDB() {
