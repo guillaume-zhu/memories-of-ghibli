@@ -1,11 +1,6 @@
 import { MODELS_DATA } from '../data/models.js'
 
 // ════════════════════════════════════════════
-// CONFIG
-// ════════════════════════════════════════════
-const API_URL = 'http://localhost:3000'
-
-// ════════════════════════════════════════════
 // STATE
 // ════════════════════════════════════════════
 let currentData = null
@@ -96,9 +91,9 @@ window.selectAvatar = function (avatarKey) {
 
 // ════════════════════════════════════════════
 // PROFIL — Rejoindre le jeu avec pseudo + avatar
-// Appelle POST /api/player/join (nouveau flux)
+// Stockage en localStorage (pas d'appel serveur)
 // ════════════════════════════════════════════
-window.handleProfileSetup = async function () {
+window.handleProfileSetup = function () {
     const username = document.getElementById('profile-username').value.trim()
     const errorEl = document.getElementById('profile-error')
     errorEl.innerText = ''
@@ -112,39 +107,17 @@ window.handleProfileSetup = async function () {
         return
     }
 
-    try {
-        const res = await fetch(`${API_URL}/api/player/join`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, avatar: selectedAvatar })
-        })
-        const data = await res.json()
+    // Stocker en localStorage
+    localStorage.setItem('miyaza_username', username)
+    localStorage.setItem('miyaza_avatar', selectedAvatar)
 
-        if (!res.ok) {
-            errorEl.innerText = data.error || 'Erreur lors de la connexion'
-            return
-        }
+    currentUsername = username
 
-        // Stocker le pseudo en localStorage pour auto-reconnexion
-        localStorage.setItem('miyaza_username', data.username)
+    const el = document.querySelector('.score-counter')
+    if (el) el.innerText = `${score} / 25`
 
-        currentUsername = data.username
-        score = data.score || 0
-        // Restaurer les objets trouvés
-        if (data.foundObjects && data.foundObjects.length > 0) {
-            for (const key of data.foundObjects) {
-                if (MODELS_DATA[key]) MODELS_DATA[key].isFound = true
-            }
-        }
-
-        const el = document.querySelector('.score-counter')
-        if (el) el.innerText = `${score} / 25`
-
-        afficherPseudo()
-        await onAuthSuccess()
-    } catch {
-        errorEl.innerText = 'Impossible de contacter le serveur'
-    }
+    afficherPseudo()
+    onAuthSuccess()
 }
 
 /* === AUTH LEGACY START ===
@@ -234,50 +207,35 @@ function afficherPseudo() {
 // Après connexion réussie :
 // Cache l'écran auth pour laisser apparaître le jeu
 // ════════════════════════════════════════════
-async function onAuthSuccess() {
+function onAuthSuccess() {
     document.getElementById('screen-auth').style.display = 'none'
 }
 
 // ════════════════════════════════════════════
-// PROGRESSION — Charger depuis le backend (nouveau flux Player)
+// PROGRESSION — Charger depuis localStorage
 // ════════════════════════════════════════════
-async function chargerProgression() {
+function chargerProgression() {
     const username = localStorage.getItem('miyaza_username')
     if (!username) return false
 
-    try {
-        const res = await fetch(`${API_URL}/api/player/join`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username })
-        })
+    currentUsername = username
+    score = parseInt(localStorage.getItem('miyaza_score') || '0')
 
-        if (!res.ok) {
-            // Pseudo invalide ou erreur → on nettoie et on affiche le menu
-            localStorage.removeItem('miyaza_username')
-            return false
-        }
-
-        const data = await res.json()
-
-        currentUsername = data.username
-        score = data.score || 0
-
-        if (data.foundObjects && data.foundObjects.length > 0) {
-            for (const key of data.foundObjects) {
+    const saved = localStorage.getItem('miyaza_foundObjects')
+    if (saved) {
+        try {
+            const foundObjects = JSON.parse(saved)
+            for (const key of foundObjects) {
                 if (MODELS_DATA[key]) MODELS_DATA[key].isFound = true
             }
-        }
-
-        const el = document.querySelector('.score-counter')
-        if (el) el.innerText = `${score} / 25`
-
-        afficherPseudo()
-        return true
-    } catch (error) {
-        console.error('Erreur chargement progression :', error)
-        return false
+        } catch { /* JSON invalide, on ignore */ }
     }
+
+    const el = document.querySelector('.score-counter')
+    if (el) el.innerText = `${score} / 25`
+
+    afficherPseudo()
+    return true
 }
 
 /* === AUTH LEGACY START ===
@@ -328,28 +286,17 @@ async function chargerProgressionLegacy() {
 === AUTH LEGACY END === */
 
 // ════════════════════════════════════════════
-// PROGRESSION — Sauvegarder dans le backend (nouveau flux Player)
+// PROGRESSION — Sauvegarder en localStorage
 // Appelée après chaque objet trouvé
 // ════════════════════════════════════════════
-async function sauvegarderProgression() {
-    const username = localStorage.getItem('miyaza_username')
-    if (!username) return
-
-    // On reconstruit la liste des clés des objets trouvés
+function sauvegarderProgression() {
     const foundObjects = Object.entries(MODELS_DATA)
         .filter(([, data]) => data.isFound)
         .map(([key]) => key)
 
-    try {
-        await fetch(`${API_URL}/api/player/save`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, score, foundObjects })
-        })
-        console.log('💾 Progression sauvegardée')
-    } catch (error) {
-        console.error('Erreur sauvegarde progression :', error)
-    }
+    localStorage.setItem('miyaza_score', score.toString())
+    localStorage.setItem('miyaza_foundObjects', JSON.stringify(foundObjects))
+    console.log('💾 Progression sauvegardée (localStorage)')
 }
 
 /* === AUTH LEGACY START ===
@@ -610,6 +557,9 @@ export function initGameInterface() {
 // ════════════════════════════════════════════
 window.handleChangePlayer = function () {
     localStorage.removeItem('miyaza_username')
+    localStorage.removeItem('miyaza_avatar')
+    localStorage.removeItem('miyaza_score')
+    localStorage.removeItem('miyaza_foundObjects')
     score = 0
     currentUsername = null
     selectedAvatar = null
@@ -652,15 +602,14 @@ window.handleLogout = function () {
 // ════════════════════════════════════════════
 // DÉMARRAGE — Vérifier si le joueur a déjà un pseudo
 // ════════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     const savedUsername = localStorage.getItem('miyaza_username')
     if (savedUsername) {
-        // Pseudo trouvé → on charge la progression depuis la BDD
-        const success = await chargerProgression()
+        // Pseudo trouvé → on charge la progression depuis localStorage
+        const success = chargerProgression()
         if (success) {
             document.getElementById('screen-auth').style.display = 'none'
         } else {
-            // Erreur → on affiche le menu
             showMenu()
         }
     } else {
