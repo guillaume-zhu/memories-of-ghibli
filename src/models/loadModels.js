@@ -120,14 +120,14 @@ export const loadModels = ({ scene, interactiveObjects, mixers, modelAnimations 
     interactiveObjects,
     mixers,
     path: "models/balais-kiki.glb",
-    position: [-3, 5.5, -20],
-    rotation: [Math.PI * 0.25, Math.PI * -0.25, Math.PI * 0.5],
-    scale: 0.05,
+    position: [-10, 8, -23],
+    rotation: [Math.PI * 0.25, Math.PI, 0],
+    scale: 0.2,
     interactive: true,
     hitboxScale: [1, 1, 1],
     showHitbox: false,
-    outlineBaseThickness: 0.01,
-    outlineHoverThickness: 0.02,
+    outlineBaseThickness: 0.0001,
+    outlineHoverThickness: 0.01,
     onLoad: (model) => {
       model.userData.modelKey = "balais-kiki"
     },
@@ -311,7 +311,7 @@ export const loadModels = ({ scene, interactiveObjects, mixers, modelAnimations 
     interactiveObjects,
     mixers,
     path: "models/kiki.glb",
-    position: [-15, 0, -25],
+    position: [-12.5, 0, -25.25],
     rotation: [0, Math.PI * -0.75, 0],
     scale: 2.75,
     interactive: true,
@@ -600,9 +600,9 @@ export const loadModels = ({ scene, interactiveObjects, mixers, modelAnimations 
     interactiveObjects,
     mixers,
     path: "models/bonhomme-totoro.glb",
-    position: [-20, 0, -35],
-    rotation: [0, 0, 0],
-    scale: 3,
+    position: [-15, 0.8, -31],
+    rotation: [0, Math.PI * 0.25, 0],
+    scale: 1.25,
     interactive: true,
     hitboxScale: [1, 1, 1],
     showHitbox: false,
@@ -872,30 +872,6 @@ export const loadModels = ({ scene, interactiveObjects, mixers, modelAnimations 
     },
   })
 
-  // ---- tree-v1 ----
-  loadInteractiveModel({
-    gltfLoader,
-    scene,
-    interactiveObjects,
-    mixers,
-    path: "models/assets/tree-v1.glb",
-    position: [-10, 0, -30],
-    rotation: [0, Math.PI * 0.25, 0],
-    scale: 1,
-    interactive: true,
-    hitboxScale: [0, 0, 0],
-    showHitbox: false,
-    // outlineBaseThickness: 0.0,
-    // outlineHoverThickness: 0.0,
-    onLoad: (model) => {
-      model.traverse((child) => {
-        if (!child.isMesh || !child.material) return
-
-        child.material.color.multiplyScalar(0.7)
-      })
-    },
-  })
-
   // ---- rockcenter ----
   loadInteractiveModel({
     gltfLoader,
@@ -906,6 +882,78 @@ export const loadModels = ({ scene, interactiveObjects, mixers, modelAnimations 
     position: [0, 0, -20],
     rotation: [0, Math.PI * 0.5, 0],
     scale: 0.005,
+    interactive: true,
+    hitboxScale: [0, 0, 0],
+    showHitbox: false,
+    outlineBaseThickness: 0.01,
+    outlineHoverThickness: 0.01,
+    onLoad: (model) => {
+      model.traverse((child) => {
+        if (!child.isMesh || !child.material) return
+
+        child.material.color.multiplyScalar(1.5)
+      })
+    },
+  })
+
+  // ---- rock kiki gauche 1 ----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/assets/rock.glb",
+    position: [-11, 0, -24],
+    rotation: [0, 0, 0],
+    scale: 0.005,
+    interactive: true,
+    hitboxScale: [0, 0, 0],
+    showHitbox: false,
+    outlineBaseThickness: 0.01,
+    outlineHoverThickness: 0.01,
+    onLoad: (model) => {
+      model.traverse((child) => {
+        if (!child.isMesh || !child.material) return
+
+        child.material.color.multiplyScalar(1.5)
+      })
+    },
+  })
+
+  // ---- rock kiki gauche 2----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/assets/rock.glb",
+    position: [-14, 0, -25],
+    rotation: [0, Math.PI, 0],
+    scale: 0.006,
+    interactive: true,
+    hitboxScale: [0, 0, 0],
+    showHitbox: false,
+    outlineBaseThickness: 0.01,
+    outlineHoverThickness: 0.01,
+    onLoad: (model) => {
+      model.traverse((child) => {
+        if (!child.isMesh || !child.material) return
+
+        child.material.color.multiplyScalar(1.5)
+      })
+    },
+  })
+
+  // ---- rock totoro bonhomme gauche 2----
+  loadInteractiveModel({
+    gltfLoader,
+    scene,
+    interactiveObjects,
+    mixers,
+    path: "models/assets/rock.glb",
+    position: [-14, -0.75, -32.5],
+    rotation: [0, Math.PI * 1, 0],
+    scale: 0.006,
     interactive: true,
     hitboxScale: [0, 0, 0],
     showHitbox: false,

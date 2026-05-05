@@ -13,6 +13,7 @@ import { createSky } from "./world/sky.js"
 import { createLights } from "./scene/lights.js"
 import { loadMountain } from "./world/mountain.js"
 import { createWaterfall } from "./world/waterfall.js"
+import { loadTrees } from "./world/trees.js"
 
 import { OrbitControls } from "three/examples/jsm/Addons.js"
 import { CameraControls } from "./controls/CameraControls.js"
@@ -194,6 +195,7 @@ async function init() {
   const waterMaterial = createWater(scene)
   const waterfallMaterial = createWaterfall(scene)
   loadMountain(scene)
+  loadTrees(scene)
 
   /**
    * Models import
