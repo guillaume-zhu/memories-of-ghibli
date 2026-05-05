@@ -20,22 +20,6 @@ import { CameraControls } from "./controls/CameraControls.js"
 import { MouseTracker } from "./controls/MouseTracker.js"
 import { openHUD } from "./hud/HUD.js"
 import { MODELS_DATA } from "./data/models.js"
-import { loadModels } from "./models/loadModels.js"
-
-import { createSetup } from "./scene/setup.js"
-import { loadPlatform } from "./world/platform.js"
-import { createWater } from "./world/water.js"
-import { createGrass } from "./world/grass.js"
-import { createSky } from "./world/sky.js"
-import { createLights } from "./scene/lights.js"
-import { loadMountain } from "./world/mountain.js"
-import { createWaterfall } from "./world/waterfall.js"
-import { loadTrees } from "./world/trees.js"
-
-import { CameraControls } from "./controls/CameraControls.js"
-import { MouseTracker } from "./controls/MouseTracker.js"
-import { openHUD } from "./hud/HUD.js"
-import { MODELS_DATA } from "./data/models.js"
 import { chargerFilmsTMDB, FILMS_TMDB } from "./data/tmdb.js"
 
 import { loadInteractiveModel } from "./utils/loadInteractiveModel.js"
@@ -50,7 +34,6 @@ import { setupModelAnimation } from "./utils/setupModelAnimation.js"
 // Camera
 let cameraControls = null
 const USE_ORBIT_CONTROLS = true
-let cameraControls = null
 
 // Raycaster
 const raycaster = new THREE.Raycaster()
@@ -121,9 +104,13 @@ async function init() {
   stats.dom.style.left = "0px"
   stats.dom.style.zIndex = "999"
 
-  // const gridHelper = new THREE.GridHelper(100, 100)
-  // scene.add(gridHelper)
-  // gridHelper.position.y = 0.5
+  const debugPanel = document.createElement("div")
+  debugPanel.className = "debug-panel"
+  document.body.appendChild(debugPanel)
+
+  // const gridHelper = new THREE.GridHelper(100, 100);
+  // scene.add(gridHelper);
+  // gridHelper.position.y = 0.5;
 
   /**
    * Camera controls
@@ -148,7 +135,7 @@ async function init() {
    * Environment
    */
   const { hemi, sun, fill, sunHelper, fillHelper } = createLights(scene)
-  createSky(scene)
+  const sky = createSky(scene)
 
   /**
    * GUI
@@ -224,48 +211,6 @@ async function init() {
   const waterfallMaterial = createWaterfall(scene)
   loadMountain(scene)
   loadTrees(scene)
-  const debugPanel = document.createElement("div")
-  debugPanel.className = "debug-panel"
-  document.body.appendChild(debugPanel)
-
-  const gridHelper = new THREE.GridHelper(100, 100)
-  scene.add(gridHelper)
-  gridHelper.position.y = 0.5
-
-  /**
-   * Camera controls
-   */
-  const mouseTracker = new MouseTracker(renderer.domElement)
-
-  let orbitControls = null
-
-  if (USE_ORBIT_CONTROLS) {
-    orbitControls = new OrbitControls(camera, renderer.domElement)
-
-    orbitControls.enableDamping = true
-    orbitControls.dampingFactor = 0.05
-
-    orbitControls.target.set(0, 2, -40)
-    orbitControls.update()
-  } else {
-    cameraControls = new CameraControls(camera, scene, mouseTracker)
-  }
-
-  /**
-   * Environment
-   */
-  createLights(scene)
-  const sky = createSky(scene)
-
-  /**
-   * World elements
-   */
-  const platform = await loadPlatform(scene)
-  const grassMaterial = createGrass(scene, platform)
-  const waterMaterial = createWater(scene)
-  const waterfallMaterial = createWaterfall(scene)
-  loadMountain(scene)
-  loadTrees(scene)
 
   /**
    * Models import
@@ -323,14 +268,12 @@ async function init() {
       renderer.domElement.style.cursor = "default"
     }
 
+    hoveredModel = updateHoverState(hoveredModel, newHoveredModel)
+
     // ---- Camera test ---- //
     if (orbitControls) {
       orbitControls.update()
     }
-
-    // ---- Render ---- //
-    renderer.render(scene, camera)
-    hoveredModel = updateHoverState(hoveredModel, newHoveredModel)
 
     // ---- Render ---- //
     renderer.render(scene, camera)
