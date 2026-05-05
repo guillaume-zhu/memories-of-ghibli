@@ -38,6 +38,6 @@ body {
   pointer-events: none;
 }
 
-#loader-screen {
+/* #loader-screen {
   display: none !important;
-}
+} */
