@@ -78,7 +78,14 @@ const createMagicGoldAnimation = (
 /**
  * Import
  */
-export const loadModels = ({ scene, interactiveObjects, mixers, modelAnimations = [] }) => {
+export const loadModels = ({
+  scene,
+  camera,
+  renderer,
+  interactiveObjects,
+  mixers,
+  modelAnimations = [],
+}) => {
   // ---------------------------------- LOGIQUE LOADER -----------------------------------------------------
   // --- Éléments du DOM ---
   const loaderBar = document.getElementById("loader-bar")
@@ -106,6 +113,12 @@ export const loadModels = ({ scene, interactiveObjects, mixers, modelAnimations 
     const progressGroup = document.getElementById("loader-progress-group")
     const launchBtn = document.getElementById("launch-btn")
     const loaderScreen = document.getElementById("loader-screen")
+
+    // Pré-compilation des shaders et upload des géométries/textures au GPU
+    // pendant l'écran de chargement → zéro freeze quand le joueur entre dans la scène
+    if (renderer && camera) {
+      renderer.compile(scene, camera)
+    }
 
     if (progressGroup) progressGroup.style.display = "none"
 
@@ -426,6 +439,9 @@ export const loadModels = ({ scene, interactiveObjects, mixers, modelAnimations 
     showHitbox: false,
     outlineBaseThickness: 0.005,
     outlineHoverThickness: 0.01,
+    onLoad: (model) => {
+      model.userData.modelKey = "lanterne"
+    },
   })
 
   // ---- Le Chateau ambulant ----
@@ -461,7 +477,7 @@ export const loadModels = ({ scene, interactiveObjects, mixers, modelAnimations 
     outlineBaseThickness: 0.0025,
     outlineHoverThickness: 0.005,
     onLoad: (model) => {
-      model.userData.modelKey = "lanterne"
+      model.userData.modelKey = "chateau-laputa"
       model.traverse((child) => {
         if (!child.isMesh || !child.material) return
 
@@ -996,7 +1012,7 @@ export const loadModels = ({ scene, interactiveObjects, mixers, modelAnimations 
     onLoad: (model) => {
       model.traverse((child) => {
         if (!child.isMesh || !child.material) return
-
+        child.material = child.material.clone()
         child.material.color.multiplyScalar(1.5)
       })
     },
