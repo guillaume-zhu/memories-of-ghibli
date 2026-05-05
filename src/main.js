@@ -208,6 +208,7 @@ async function init() {
   const platform = await loadPlatform(scene)
   const grassMaterial = createGrass(scene, platform)
   const waterMaterial = createWater(scene)
+  waterMaterial.setBlur(0.1)
   const waterfallMaterial = createWaterfall(scene)
   loadMountain(scene)
   loadTrees(scene)
