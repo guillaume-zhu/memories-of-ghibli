@@ -8,13 +8,6 @@ import { initGameInterface, onModelsLoaded } from "../hud/HUD.js"
 import { setGameReady } from "../main.js"
 import { playBackgroundMusic } from '../utils/sound.js'
 
-// fonction du son:
-function playSound(file, vol = 1.0) {
-  let audio = new Audio(file)
-  audio.volume = vol
-  audio.play()
-}
-
 /**
  * Animations
  */
