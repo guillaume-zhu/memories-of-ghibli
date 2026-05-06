@@ -1,7 +1,7 @@
 import * as THREE from "three"
 
 export function createLights(scene) {
-  const hemi = new THREE.HemisphereLight("#bfe9ff", "#6f8f4e", 0.85)
+  const hemi = new THREE.HemisphereLight("#e87c4e", "#6f8f4e", 0.85)
   scene.add(hemi)
 
   const sun = new THREE.DirectionalLight("#fff1d0", 0.8)
@@ -19,8 +19,8 @@ export function createLights(scene) {
   const sunHelper = new THREE.DirectionalLightHelper(sun, 5)
   const fillHelper = new THREE.DirectionalLightHelper(fill, 3)
 
-  scene.add(sunHelper)
-  scene.add(fillHelper)
+  // scene.add(sunHelper)
+  // scene.add(fillHelper)
 
   return { hemi, sun, fill, sunHelper, fillHelper }
 }
