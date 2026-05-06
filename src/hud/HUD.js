@@ -3,6 +3,7 @@ import { chargerProgression } from '../data/progression.js'
 import { showAnecdote, handleAnswer } from './quiz.js'
 import { playSound } from '../utils/sound.js'
 import '../auth/profile.js' // Importer pour attacher les fonctions globales (profil/auth)
+import { loadSavedTheme, loadSavedBadge } from './settings.js'
 
 // ════════════════════════════════════════════
 // VÉRIFICATION D'ÉTAT (MODÈLES & PROFIL)
@@ -146,6 +147,10 @@ export function initGameInterface() {
 // DÉMARRAGE — Vérifier si le joueur a déjà un pseudo
 // ════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
+    // Appliquer les préférences sauvegardées dès le démarrage
+    loadSavedTheme()
+    loadSavedBadge()
+
     const savedUsername = localStorage.getItem('miyaza_username')
     if (savedUsername) {
         // Pseudo trouvé → on charge la progression

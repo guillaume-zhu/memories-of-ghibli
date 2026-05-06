@@ -277,5 +277,14 @@ export const MODELS_DATA = {
         anecdote: "À sa sortie, le film n'a pas été le grand succès commercial attendu. Sa réputation a grandi au fil des ans, devenant l'un des films cultes du studio et une référence de l'animation.",
         imageAnecdote: "./img/chateau-laputa-ex.png",
         isFound: false,
+    },
+    "chateau-ambulant": {
+        filmTmdbId: 4935,
+        imageObjet: "./img/chateau-ambulant.png",
+        choix: ["Le Voyage de Chihiro", "Le Château Ambulant", "Le Château dans le Ciel"],
+        bonneReponse: "Le Château Ambulant",
+        anecdote: "Le château ambulant, dans son design hétéroclite, est censé représenter le subconscient encombré et chaotique d'Hauru. Miyazaki s'est inspiré de l'esthétique steampunk et des croquis de Léonard de Vinci pour le concevoir.",
+        imageAnecdote: "./img/chateau-ambulant-ex.png",
+        isFound: false,
     }
 }

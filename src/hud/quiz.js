@@ -1,6 +1,7 @@
 import { state } from '../state/gameState.js'
 import { playSound } from '../utils/sound.js'
 import { sauvegarderProgression } from '../data/progression.js'
+import { checkMilestone } from './milestone.js'
 
 // ════════════════════════════════════════════
 // ANECDOTE
@@ -72,11 +73,23 @@ window.finishSequenceWithTrophy = function () {
         anecdoteScreen.classList.remove('pop-out')
         updateScore()
         if (interfaceMain) interfaceMain.style.display = 'none'
+        state.hudOpen = false
         if (state.isNewFind) {
             showTrophyNotification()
             state.isNewFind = false
         }
     }, 300)
+}
+
+// ── Gestionnaire de pile de toasts ──
+const _toastStack = []
+const TOAST_BASE_TOP = 110  // px — position du premier toast
+const TOAST_STEP    = 82    // px — hauteur toast (64px) + gap (18px)
+
+function _reflowToasts() {
+    _toastStack.forEach((t, i) => {
+        t.style.top = (TOAST_BASE_TOP + i * TOAST_STEP) + 'px'
+    })
 }
 
 export function showTrophyNotification() {
@@ -89,6 +102,10 @@ export function showTrophyNotification() {
             <p class="trophy-count">${state.score} / 25 souvenirs</p>
         </div>
     `
+
+    // Position dans la pile avant d'ajouter au DOM
+    toast.style.top = (TOAST_BASE_TOP + _toastStack.length * TOAST_STEP) + 'px'
+    _toastStack.push(toast)
     document.body.appendChild(toast)
 
     requestAnimationFrame(() => {
@@ -101,7 +118,13 @@ export function showTrophyNotification() {
     setTimeout(() => {
         toast.classList.remove('trophy-visible')
         toast.classList.add('trophy-hide')
-        setTimeout(() => toast.remove(), 500)
+        setTimeout(() => {
+            // Retirer de la pile et recalculer les positions
+            const idx = _toastStack.indexOf(toast)
+            if (idx !== -1) _toastStack.splice(idx, 1)
+            toast.remove()
+            _reflowToasts()
+        }, 500)
     }, 3500)
 }
 
@@ -118,5 +141,6 @@ export function updateScore() {
 
         // On sauvegarde en base à chaque nouvel objet trouvé
         sauvegarderProgression()
+        checkMilestone(state.score)
     }
 }

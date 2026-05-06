@@ -6,13 +6,7 @@ import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js"
 import { loadInteractiveModel } from "../utils/loadInteractiveModel.js"
 import { initGameInterface, onModelsLoaded } from "../hud/HUD.js"
 import { setGameReady } from "../main.js"
-
-// fonction du son:
-function playSound(file, vol = 1.0) {
-  let audio = new Audio(file)
-  audio.volume = vol
-  audio.play()
-}
+import { initMusic } from "../utils/music.js"
 
 /**
  * Animations
@@ -124,7 +118,7 @@ export const loadModels = ({
 
     if (launchBtn) {
       launchBtn.onclick = () => {
-        playSound("./sound/Ghibli-sounds-shortened.MP3")
+        initMusic()
         // 1. On cache le loader
         loaderScreen.classList.add("loader-hidden")
 
@@ -459,6 +453,9 @@ export const loadModels = ({
     showHitbox: false,
     outlineBaseThickness: 0.005,
     outlineHoverThickness: 0.01,
+    onLoad: (model) => {
+      model.userData.modelKey = "chateau-ambulant"
+    },
   })
 
   // ---- Le Chateau laputa ----

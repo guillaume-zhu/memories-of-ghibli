@@ -96,11 +96,17 @@ window.handleProfileSetup = function () {
 // CHANGER DE JOUEUR
 // ════════════════════════════════════════════
 window.handleChangePlayer = function () {
+    // Progression
     localStorage.removeItem('miyaza_username')
     localStorage.removeItem('miyaza_avatar')
     localStorage.removeItem('miyaza_score')
     localStorage.removeItem('miyaza_foundObjects')
-    
+    // Paliers & préférences (ajoutés avec le système de settings/milestones)
+    localStorage.removeItem('miyaza_milestonesShown')
+    localStorage.removeItem('miyaza_music')
+    localStorage.removeItem('miyaza_badge')
+    localStorage.removeItem('miyaza_theme')
+
     // On recharge simplement la page pour recommencer le flux
     window.location.reload()
 }
