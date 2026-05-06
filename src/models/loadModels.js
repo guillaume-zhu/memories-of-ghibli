@@ -484,7 +484,7 @@ export const loadModels = ({
     interactiveObjects,
     mixers,
     path: "models/chihiro.glb",
-    position: [20, 0, -25],
+    position: [18, 0, -20],
     rotation: [0, Math.PI * 1.5, 0],
     scale: 0.35,
     interactive: true,
@@ -495,8 +495,8 @@ export const loadModels = ({
       model.userData.modelKey = "chihiro"
       modelAnimations.push(
         createCircularWalkAnimation(model, {
-          radius: 2.5,
-          angularSpeed: 0.35,
+          radius: 5,
+          angularSpeed: 0.6,
           clockwise: true,
           rotationOffset: 0,
         }),
