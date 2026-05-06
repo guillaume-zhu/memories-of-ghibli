@@ -96,18 +96,18 @@ async function init() {
   /**
    * Renderer and stat info panel
    */
-  const stats = new Stats()
-  stats.showPanel(0)
-  document.body.appendChild(stats.dom)
+  // const stats = new Stats()
+  // stats.showPanel(0)
+  // document.body.appendChild(stats.dom)
 
-  stats.dom.style.position = "fixed"
-  stats.dom.style.top = "0px"
-  stats.dom.style.left = "0px"
-  stats.dom.style.zIndex = "999"
+  // stats.dom.style.position = "fixed"
+  // stats.dom.style.top = "0px"
+  // stats.dom.style.left = "0px"
+  // stats.dom.style.zIndex = "999"
 
-  const debugPanel = document.createElement("div")
-  debugPanel.className = "debug-panel"
-  document.body.appendChild(debugPanel)
+  // const debugPanel = document.createElement("div")
+  // debugPanel.className = "debug-panel"
+  // document.body.appendChild(debugPanel)
 
   /**
    * Camera controls
@@ -176,7 +176,7 @@ async function init() {
   function animate() {
     requestAnimationFrame(animate)
 
-    stats.begin()
+    // stats.begin()
 
     // ---- Time update ---- //
     timer.update()
@@ -223,17 +223,17 @@ async function init() {
     // ---- Render ---- //
     renderer.render(scene, camera)
 
-    if (t - lastDebugUpdate > 1) {
-      lastDebugUpdate = t
-      debugPanel.innerHTML = `
-  Triangles: ${renderer.info.render.triangles}<br>
-  Draw calls: ${renderer.info.render.calls}<br>
-  Geometries: ${renderer.info.memory.geometries}<br>
-  Textures: ${renderer.info.memory.textures}
-`
-    }
+    //     if (t - lastDebugUpdate > 1) {
+    //       lastDebugUpdate = t
+    //       debugPanel.innerHTML = `
+    //   Triangles: ${renderer.info.render.triangles}<br>
+    //   Draw calls: ${renderer.info.render.calls}<br>
+    //   Geometries: ${renderer.info.memory.geometries}<br>
+    //   Textures: ${renderer.info.memory.textures}
+    // `
+    //     }
 
-    stats.end()
+    // stats.end()
   }
 
   animate()
