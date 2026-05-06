@@ -839,6 +839,29 @@ body {
     font-weight: bold;
 }
 
+/* ── Texte narratif animé ── */
+#intro-narrative {
+    max-width: 480px;
+    margin: 24px auto 32px;
+    text-align: center;
+}
+
+#intro-narrative p {
+    font-family: var(--font-lexend);
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.8;
+    color: #000;
+}
+
+#intro-narrative .narrative-spacer {
+    height: 0.6em;
+}
+
+.narrative-word {
+    display: inline-block;
+}
+
 /* Classe pour faire disparaître le loader */
 .loader-hidden {
     opacity: 0;
