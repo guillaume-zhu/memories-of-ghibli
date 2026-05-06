@@ -984,7 +984,7 @@ export const loadModels = ({
       model.traverse((child) => {
         if (!child.isMesh || !child.material) return
 
-        child.material.color.multiplyScalar(1.5)
+        child.material.color.multiplyScalar(0.9)
       })
     },
   })
@@ -1008,7 +1008,7 @@ export const loadModels = ({
       model.traverse((child) => {
         if (!child.isMesh || !child.material) return
         child.material = child.material.clone()
-        child.material.color.multiplyScalar(1.5)
+        child.material.color.multiplyScalar(0.9)
       })
     },
   })
@@ -1056,7 +1056,7 @@ export const loadModels = ({
       model.traverse((child) => {
         if (!child.isMesh || !child.material) return
 
-        child.material.color.multiplyScalar(1.5)
+        child.material.color.multiplyScalar(0.9)
       })
     },
   })
@@ -1080,7 +1080,7 @@ export const loadModels = ({
       model.traverse((child) => {
         if (!child.isMesh || !child.material) return
 
-        child.material.color.multiplyScalar(1.5)
+        child.material.color.multiplyScalar(0.9)
       })
     },
   })
@@ -1104,7 +1104,7 @@ export const loadModels = ({
       model.traverse((child) => {
         if (!child.isMesh || !child.material) return
 
-        child.material.color.multiplyScalar(1.5)
+        child.material.color.multiplyScalar(0.9)
       })
     },
   })
@@ -1128,7 +1128,7 @@ export const loadModels = ({
       model.traverse((child) => {
         if (!child.isMesh || !child.material) return
 
-        child.material.color.multiplyScalar(1.5)
+        child.material.color.multiplyScalar(0.9)
       })
     },
   })
