@@ -4,17 +4,52 @@ import { showAnecdote, handleAnswer } from './quiz.js'
 import { playSound, toggleAllSounds, getMuted } from '../utils/sound.js'
 import '../auth/profile.js' // Importer pour attacher les fonctions globales (profil/auth)
 import { loadSavedTheme, loadSavedBadge } from './settings.js'
+import gsap from 'gsap'
+
+let narrativeTriggered = false
 
 // ════════════════════════════════════════════
 // VÉRIFICATION D'ÉTAT (MODÈLES & PROFIL)
 // ════════════════════════════════════════════
 export function checkReadyState() {
-    if (state.profileReady && state.modelsLoaded) {
-        const launchBtn = document.getElementById('launch-btn')
-        if (launchBtn) {
-            launchBtn.style.display = 'inline-block'
+    if (!state.profileReady || !state.modelsLoaded || narrativeTriggered) return
+    narrativeTriggered = true
+
+    const progressGroup = document.getElementById('loader-progress-group')
+    const authProfile = document.getElementById('auth-profile')
+    if (progressGroup) progressGroup.style.display = 'none'
+    if (authProfile) authProfile.style.display = 'none'
+
+    const narrative = document.getElementById('intro-narrative')
+    if (!narrative) return
+    narrative.style.display = 'block'
+
+    const paras = narrative.querySelectorAll('p:not(.narrative-spacer)')
+    const words = []
+    paras.forEach(p => {
+        const text = p.textContent
+        p.innerHTML = text
+            .split(' ')
+            .map(w => `<span class="narrative-word">${w}</span>`)
+            .join(' ')
+        words.push(...p.querySelectorAll('.narrative-word'))
+    })
+
+    gsap.from(words, {
+        y: -24,
+        opacity: 0,
+        filter: 'blur(8px)',
+        duration: 0.65,
+        stagger: 0.15,
+        ease: 'power2.out',
+        onComplete: () => {
+            const launchBtn = document.getElementById('launch-btn')
+            if (launchBtn) {
+                launchBtn.style.visibility = 'visible'
+                gsap.fromTo(launchBtn, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+            }
         }
-    }
+    })
 }
 
 export function onModelsLoaded() {

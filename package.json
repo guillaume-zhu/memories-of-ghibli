@@ -16,6 +16,7 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "gsap": "^3.15.0",
     "naughty-words": "^1.2.0",
     "node-fetch": "^3.3.2",
     "stats": "^1.0.0",
