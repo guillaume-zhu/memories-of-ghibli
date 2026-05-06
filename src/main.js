@@ -14,6 +14,7 @@ import { createLights } from "./scene/lights.js"
 import { loadMountain } from "./world/mountain.js"
 import { createWaterfall } from "./world/waterfall.js"
 import { loadTrees } from "./world/trees.js"
+import { createFog } from "./scene/fog.js"
 
 import { OrbitControls } from "three/examples/jsm/Addons.js"
 import { CameraControls } from "./controls/CameraControls.js"
@@ -133,6 +134,7 @@ async function init() {
    */
   const { hemi, sun, fill, sunHelper, fillHelper } = createLights(scene)
   const sky = createSky(scene)
+  createFog(scene)
 
   /**
    * GUI

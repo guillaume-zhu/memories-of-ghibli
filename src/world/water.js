@@ -77,7 +77,7 @@ function createBlurMaterial(
   createWater  –  Reflector + blurred reflection
    ══════════════════════════════════════════ */
 export function createWater(scene) {
-  scene.fog = new THREE.Fog("#ff8000", 800, 3000)
+  const reflectionFog = new THREE.Fog("#ff8000", 800, 3000)
 
   const texW = 1024
   const texH = 1024
@@ -131,6 +131,8 @@ export function createWater(scene) {
   const originalOnBeforeRender = water.onBeforeRender.bind(water)
 
   water.onBeforeRender = function (renderer, scene, camera) {
+    const savedFog = scene.fog
+    scene.fog = reflectionFog
     // 1. Rendu normal de la réflexion dans le renderTarget interne
     originalOnBeforeRender(renderer, scene, camera)
 
@@ -158,6 +160,7 @@ export function createWater(scene) {
     // Restaurer l'état du renderer
     renderer.setRenderTarget(savedRT)
     renderer.autoClear = savedAutoClear
+    scene.fog = savedFog
   }
 
   /* ── API publique ── */
