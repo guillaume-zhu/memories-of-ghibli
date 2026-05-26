@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const _updateVolumeBtn = () => {
             const muted = getMuted()
             const label = document.getElementById('volume-label')
-            if (label) label.textContent = muted ? 'Désactivée' : 'Activée'
+            if (label) label.textContent = muted ? 'Off' : 'On'
             volumeBtn.classList.toggle('toggle-on', !muted)
             volumeBtn.classList.toggle('toggle-off', muted)
             volumeBtn.title = muted ? 'Activer le son' : 'Couper le son'

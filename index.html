@@ -24,6 +24,10 @@
     <script type="module" src="./src/hud/HUD.js"></script>
   </head>
   <body>
+    <div id="mobile-blocker">
+      <img src="/img/logo.svg" alt="Memories of Ghibli" class="mobile-blocker-logo" />
+      <p class="mobile-blocker-text">Afin de profiter pleinement de l'expérience Memories of Ghibli, veuillez y accéder depuis un ordinateur.</p>
+    </div>
     <canvas class="webgl"></canvas>
     <script type="module" src="/src/main.js"></script>
 
@@ -119,14 +123,16 @@
                     class="icon-left volume-toggle-btn toggle-on"
                 >
                     <img src="./img/volume-icon.svg" alt="" class="volume-icon-img" />
-                    <span id="volume-label">Activée</span>
+                    <span id="volume-label">On</span>
                 </button>
+                <div class="icon-center">
+                    <div class="score-badge">
+                        <img src="./img/puzzle-vector.png" alt="" class="puzzle-icon" />
+                        <p class="score-counter">0 / 32</p>
+                    </div>
+                </div>
                 <div class="icon-right">
                     <div class="player-hud">
-                        <div class="player-score">
-                            <img src="./img/puzzle-vector.png" alt="icone de puzzle" class="puzzle-icon" />
-                            <p class="score-counter">0 / 32</p>
-                        </div>
                         <div class="player-card" onclick="togglePlayerDropdown()">
                             <img id="header-avatar" src="" alt="avatar" class="header-avatar-img" />
                             <div>

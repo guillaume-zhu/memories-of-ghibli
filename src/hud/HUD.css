@@ -50,7 +50,7 @@ body {
     align-items: center;
     gap: 8px;
     border: 2px solid #000;
-    border-radius: 20px;
+    border-radius: 12px;
     padding: 8px 16px;
     font-family: var(--font-lexend);
     font-size: 0.85rem;
@@ -71,6 +71,37 @@ body {
     width: 18px;
     height: 18px;
     object-fit: contain;
+}
+
+#volume-label {
+    display: inline-block;
+    min-width: 1.8em;
+    text-align: left;
+}
+
+.icon-center {
+    position: absolute;
+    left: 50%;
+    top: 30px;
+    transform: translateX(-50%);
+}
+
+.score-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 2px solid #000;
+    border-radius: 12px;
+    padding: 8px 16px;
+    box-shadow: 2px 2px 0px #000;
+    background: var(--bg-color);
+}
+
+.score-badge .score-counter {
+    font-family: var(--font-lexend);
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin: 0;
 }
 
 .icon-right {
@@ -1069,6 +1100,43 @@ body {
     z-index: 1;
 }
 
+/* ── Écran de blocage mobile ── */
+#mobile-blocker {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    #mobile-blocker {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background: var(--bg-color);
+        padding: 40px 32px;
+        text-align: center;
+    }
+
+    .mobile-blocker-logo {
+        width: 200px;
+        max-width: 60vw;
+        object-fit: contain;
+    }
+
+    .mobile-blocker-text {
+        font-family: var(--font-lexend);
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.7;
+        color: #000;
+        max-width: 320px;
+        margin: 0;
+    }
+}
+
 /* Responsive Mobile */
 @media (max-width: 600px) {
     .milestone-popup {
@@ -1327,8 +1395,15 @@ body {
 }
 
 .toggle-off {
-    background: #e0e0e0;
-    color: #666;
+    /* background: #e0e0e0; */
+    background: rgb(188, 89, 89);
+    /* color: #666; */
+    color: #fff;
+    text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
 }
 
 .settings-toggle-btn:hover {

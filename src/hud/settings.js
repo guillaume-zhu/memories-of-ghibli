@@ -122,7 +122,7 @@ function buildMusicSection(score) {
         <div class="settings-toggle-row">
             <span class="settings-toggle-label">Musique d'ambiance</span>
             <button class="settings-toggle-btn ${on ? 'toggle-on' : 'toggle-off'}" id="music-toggle">
-                ${on ? '🔊 Activée' : '🔇 Désactivée'}
+                ${on ? '🔊 On' : '🔇 Off'}
             </button>
         </div>
         <div class="settings-track-row">
@@ -210,7 +210,7 @@ function wireMusicSection() {
         const muted = toggleAllSounds()
         const enabled = !muted
         const btn = document.getElementById('music-toggle')
-        btn.textContent = enabled ? '🔊 Activée' : '🔇 Désactivée'
+        btn.textContent = enabled ? '🔊 On' : '🔇 Off'
         btn.className = `settings-toggle-btn ${enabled ? 'toggle-on' : 'toggle-off'}`
     })
 
