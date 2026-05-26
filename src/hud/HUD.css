@@ -1100,6 +1100,43 @@ body {
     z-index: 1;
 }
 
+/* ── Écran de blocage mobile ── */
+#mobile-blocker {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    #mobile-blocker {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background: var(--bg-color);
+        padding: 40px 32px;
+        text-align: center;
+    }
+
+    .mobile-blocker-logo {
+        width: 200px;
+        max-width: 60vw;
+        object-fit: contain;
+    }
+
+    .mobile-blocker-text {
+        font-family: var(--font-lexend);
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.7;
+        color: #000;
+        max-width: 320px;
+        margin: 0;
+    }
+}
+
 /* Responsive Mobile */
 @media (max-width: 600px) {
     .milestone-popup {
